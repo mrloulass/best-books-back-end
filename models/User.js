@@ -2,16 +2,20 @@
 
 const mongoose = require('mongoose');
 
-// const {Schema} = mongoose;
+const {Schema} = mongoose;
 
-const userSchema = mongoose.Schema({
+const BookSchema = new Schema({
+  name: String,
+  author: String,
+  description: String,
+  status: String
+});
+
+const userSchema = new Schema({
   email: {type: String, required: true},
   books: [BookSchema]
 });
 
-const BookSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  status: Boolean
-});
+const User = mongoose.model('User', userSchema);
 
+module.exports = User;
