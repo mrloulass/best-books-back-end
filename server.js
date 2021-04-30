@@ -31,7 +31,7 @@ app.get('/books', (request, response) => {
   let user = request.query.user;
   User.find({},(error, databaseResults) => {
     console.log(databaseResults);
-    response.send(databaseResults[0]);
+    response.send(databaseResults[1]);
   });
 });
 
