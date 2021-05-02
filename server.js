@@ -78,6 +78,8 @@ app.post('/books', (request, response) => {
         description: request.body.description,
         status: request.body.status
       });
+      user.save().then(response.send(user.books));
+      // add catch for error
     }
   });
 });
