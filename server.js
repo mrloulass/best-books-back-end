@@ -52,8 +52,8 @@ userThree.save();
 // app.get( '/test', testRoute);
 
 app.get('/books', (request, response) => {
-  let user = request.query.user;
-  User.find({}, (error, databaseResults) => {
+  let email = request.query.user;
+  User.find({email: email}, (error, databaseResults) => {
     console.log(databaseResults);
     response.send(databaseResults[3]);
   });
@@ -84,6 +84,17 @@ app.post('/books', (request, response) => {
   });
 });
 
+app.delete('/books/:id', (request, response) => {
+  let email = request.query.user;
+  User.find({ email: email}, (error, userData) => {
+    let user = userData[0];
+    user.books = user.books.filter(book => `${book._id}` !== require.params.id);
+    console.log(user.books);
+    user.save().then(userData => {
+      response.send(userData.books);
+    });
+  });
+});
 
 const PORT = process.env.PORT || 3001;
 
