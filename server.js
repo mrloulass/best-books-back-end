@@ -53,7 +53,7 @@ userThree.save();
 
 app.get('/books', (request, response) => {
   let email = request.query.user;
-  User.find({email: email}, (error, databaseResults) => {
+  User.find({ email: email }, (error, databaseResults) => {
     console.log(databaseResults);
     response.send(databaseResults[0]);
   });
@@ -87,12 +87,31 @@ app.post('/books', (request, response) => {
 app.delete('/books/:id', (request, response) => {
   let email = request.query.user;
   console.log(request.params, 'works');
-  User.find({ email: email}, (error, userData) => {
+  User.find({ email: email }, (error, userData) => {
     let user = userData[0];
     user.books = user.books.filter(book => `${book._id}` !== request.params.id);
     console.log(user.books);
     user.save().then(userData => {
       response.send(userData.books);
+    });
+  });
+});
+
+app.put('/books/:id', (request, response) => {
+  let email = request.body.user;
+  User.find({ email: email }, (error, userData) => {
+    let bookId = request.params.id;
+    let user = userData[0];
+    user.books.forEach(book => {
+      if (`${book._id}` === bookId) {
+        book.name = request.body.name;
+        book.author = request.body.author;
+        book.description = request.body.description;
+        book.status = request.body.status;
+      }
+    });
+    user.save().then(savedUserData => {
+      response.send(savedUserData.books);
     });
   });
 });
